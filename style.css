@@ -19,7 +19,7 @@ body {
 }
 
 .btn-privious {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(235, 228, 228, 0.2);
   color: #ffffff;
 }
 .navbar-toggler {
@@ -38,6 +38,6 @@ body {
   background: rgba(255, 255, 255, 0.2);
   border-radius: 15px;
 }
-#load-spinner {
-  display: none;
+.hidden {
+  display: none !important;
 }

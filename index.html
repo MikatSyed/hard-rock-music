@@ -53,7 +53,7 @@
                 </div>
             </div>
             <!-- spinner-->
-            <div id="load-spinner" class="d-flex justify-content-center display-spinner d-none">
+            <div id="load-spinner" class="d-flex justify-content-center display-spinner hidden">
                 <div class="spinner-border text-warning" role="status">
                     <span class="sr-only">Loading...</span>
                 </div>
@@ -61,10 +61,11 @@
 
 
             <!-- Single Lyrics -->
-            <div class="single-lyrics text-center">
+            <h3 id="error-message" class="text-danger text-center"></h3>
+            <div id="song-lyrics" class="single-lyrics text-center">
             </div>
 
-            <div id="song-container">
+            <div id="song-container" class="search-result col-md-8 mx-auto py-4">
 
             </div>
         </main>
