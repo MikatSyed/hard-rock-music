@@ -1,34 +1,40 @@
-const handleSearchSong =  ()=>{
+const handleSearchSong = () => {
     const searchSong = document.getElementById('search-input').value;
     //load data
     // toggleSpinner(true);
     toggleSpinner();
-    
-     fetch(`https://deezerdevs-deezer.p.rapidapi.com/search?q=${searchSong}`, {
+
+    fetch(`https://deezerdevs-deezer.p.rapidapi.com/search?q=${searchSong}`, {
         "method": "GET",
         "headers": {
             "x-rapidapi-key": "6b16b0d3bemshc23d50ca0c04dbbp135a19jsn43386888765f",
             "x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com"
         }
     })
-     .then(res =>res.json())
-     .then(data => displaySong(data.data))
+        .then(res => res.json())
+        .then(data => {
+            displaySong(data.data)
+        })
 
-     .catch(error => displayError('Something went wrong!! Please try again later!'))
+        .catch(error => {
+            displayError('No result found!! Please search by a name!')
+            toggleSpinner();
+        });
 }
-    
+
+
+const displaySong = songs => {
 
 
 
-const displaySong = songs =>{
     console.log(songs);
     const songContainer = document.getElementById('song-container')
     songContainer.innerHTML = ''
     // songContainer.className = 'search-result col-md-8 mx-auto py-4'
-
-   songs.forEach(song =>{
-   const songDiv = document.createElement('div');
-   songDiv.innerHTML = `
+    if (songs.length) {
+        songs.forEach(song => {
+            const songDiv = document.createElement('div');
+            songDiv.innerHTML = `
    <div class="single-result row align-items-center my-3 p-3">
    <div class="col-md-9">
        <h3 class="lyrics-name">${song.title}</h3>
@@ -41,28 +47,34 @@ const displaySong = songs =>{
        <button onclick="getLyrics('${song.artist.name}','${song.title}')" class="btn btn-success">Get Lyrics</button>
    </div>
 </div> `
-   songContainer.appendChild(songDiv);
-//    toggleSpinner(false);
-toggleSpinner()
-       
-   
-   })
+
+            songContainer.appendChild(songDiv);
+            //    toggleSpinner(false);
+            toggleSpinner()
+
+        })
+    }
+    else {
+        displayError('Something went wrong,please try again later!')
+        toggleSpinner()
+    }
+
 }
 
 //load lyrics data
-const getLyrics = async(artist,title)=>{
-    console.log(artist,title);
-     try{
+const getLyrics = async (artist, title) => {
+    console.log(artist, title);
+    try {
         const url = await fetch(`https://api.lyrics.ovh/v1/${artist}/${title}`)
-        const data = await  url.json();
-         displayLyrics(data.lyrics); 
-     }  
-     catch(error){
-      displayError('Sorry  failed to load lyrics,Please try again later!');
-     }
+        const data = await url.json();
+        displayLyrics(data.lyrics);
+    }
+    catch (error) {
+        displayError('Sorry  failed to load lyrics,Please try again later!');
+    }
 }
 
-const displayLyrics = lyrics =>{
+const displayLyrics = lyrics => {
     const lyricsDiv = document.getElementById('song-lyrics');
     lyricsDiv.innerText = lyrics;
 }
@@ -70,24 +82,24 @@ const displayLyrics = lyrics =>{
 
 
 //loadSpinner
-const toggleSpinner = (show) =>{
+const toggleSpinner = (show) => {
     const spinner = document.getElementById("load-spinner");
     const songs = document.getElementById("song-container");
     console.log(spinner.classList);
     console.log(songs.classList);
     // if(show){
-    
-        // spinner.classList.remove('hidden'); 
+
+    // spinner.classList.remove('hidden'); 
     // }
     // else{
     //     spinner.classList.add('hidden');
     // }
-   
+
     spinner.classList.toggle('hidden');
     songs.classList.toggle('hidden');
 }
 
-const displayError = error =>{
+const displayError = error => {
     const errorTag = document.getElementById("error-message");
     errorTag.innerText = error;
 }
